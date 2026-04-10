@@ -28,7 +28,7 @@ export default function Contact() {
               key={label}
               href={href}
               target={href.startsWith('mailto') ? undefined : '_blank'}
-              rel="noopener noreferrer"
+              rel={href.startsWith('mailto') ? undefined : 'noopener noreferrer'}
               className="p-5 rounded-lg border text-left transition-all duration-200 hover:-translate-y-1"
               style={{ background: 'var(--bp-surface)', borderColor: 'var(--bp-border)' }}
               onMouseEnter={e => (e.currentTarget.style.borderColor = 'var(--bp-accent)')}
