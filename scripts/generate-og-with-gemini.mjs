@@ -2,7 +2,7 @@
 /**
  * generate-og-with-gemini.mjs
  *
- * Uses Google Gemini Imagen 3 API to generate the OG image for rexquintenta.dev.
+ * Uses Google Gemini Imagen 4 API to generate the OG image for rexquintenta.dev.
  * Requires: GEMINI_API_KEY environment variable
  *
  * Run: GEMINI_API_KEY=your_key node scripts/generate-og-with-gemini.mjs
@@ -24,82 +24,14 @@ if (!API_KEY) {
   process.exit(1);
 }
 
-// Maximally detailed Gemini Imagen 3 prompt for the Blueprint Systems OG image
-const IMAGE_PROMPT = `
-Create a professional Open Graph social preview image (1200x630 pixels, landscape) for a personal portfolio website.
-
-DESIGN SYSTEM: "Blueprint Systems" — a dark technical aesthetic inspired by engineering blueprints and systems architecture.
-
-BACKGROUND:
-- Deep navy/near-black background color: #070d1a
-- Subtle blueprint engineering grid overlay: very faint cyan lines (rgba(0,212,255,0.04)) forming a 24px repeating grid across the entire background
-- The grid should be barely visible, like actual blueprint graph paper
-
-CORNER MARKS:
-- Place small L-shaped bracket corner marks at all 4 corners of the image
-- Each corner mark is approximately 24x24 pixels, formed by two perpendicular lines (2px thick)
-- Color: rgba(0,212,255,0.35) — semi-transparent electric cyan
-- These should look like technical drawing registration marks or engineering viewport corners
-
-CONTENT (centered vertically and horizontally, slight upper-center bias):
-
-1. TOP LABEL (above the name):
-   Text: "// AI AUTOMATION SPECIALIST"
-   Font: monospace (engineering/code aesthetic)
-   Size: 18px equivalent
-   Color: #00d4ff (electric cyan)
-   Letter spacing: very wide (like a technical label)
-   Style: all uppercase
-
-2. MAIN NAME (largest element, hero text):
-   Text: "Rex Quintenta"
-   Font: bold, clean sans-serif (similar to Geist or Inter)
-   Size: 72-80px equivalent
-   Color: #e2e8f0 (near-white, slightly cool)
-   Font weight: 800 (extra bold)
-
-3. SUBTITLE:
-   Text: "I build AI systems and automations that actually ship."
-   Font: regular weight sans-serif
-   Size: 22px equivalent
-   Color: #94a3b8 (muted blue-gray)
-
-4. STATS ROW:
-   Text: "3,500+ HRS  ·  100% JSS  ·  13+ WORKFLOWS"
-   Font: monospace
-   Size: 16px
-   Color: #00d4ff (electric cyan)
-   Style: dot-separated, technical display
-
-5. DOMAIN (bottom-right corner):
-   Text: "rexquintenta.dev"
-   Font: monospace
-   Size: 16px
-   Color: #64748b (muted gray)
-   Position: bottom-right, with padding
-
-OVERALL AESTHETIC:
-- Dark, technical, professional
-- Engineering blueprint meets modern AI portfolio
-- Clean and scannable at social media thumbnail sizes
-- High contrast between the dark background and cyan/white text
-- The image should feel like a sophisticated technical dashboard or architecture diagram header
-
-DO NOT include:
-- Generic stock photo elements
-- Gradients (except very subtle vignette if needed)
-- Decorative illustrations
-- Profile photos
-- Logos other than text
-
-The final image should look like a professional product screenshot or engineering system overview card.
-`;
+// Final working prompt — pure visual language, no CSS/code syntax
+const IMAGE_PROMPT = `A professional developer portfolio banner. Dark navy blue background with a subtle faint grid pattern. Small L-shaped bracket marks in all four corners in glowing cyan. Centered layout top to bottom: small cyan uppercase text "AI AUTOMATION SPECIALIST", then large bold white text "Rex Quintenta", then smaller gray text "I build AI systems and automations that actually ship.", then small cyan text "3500+ Upwork Hours · 100% Job Success · 13 Live Workflows". Bottom right corner small gray text: rexquintenta.dev. Clean, minimal, dark tech aesthetic, like a modern software product card.`;
 
 async function generateOGImage() {
-  console.log('Generating OG image with Gemini Imagen 3...');
+  console.log('Generating OG image with Gemini Imagen 4...');
   console.log('Prompt length:', IMAGE_PROMPT.length, 'characters');
 
-  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${API_KEY}`;
+  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key=${API_KEY}`;
 
   const requestBody = {
     instances: [
