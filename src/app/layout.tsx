@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import Script from 'next/script';
 import { GeistSans } from 'geist/font/sans';
@@ -31,11 +32,13 @@ export const metadata: Metadata = {
 // Safe use of dangerouslySetInnerHTML per Next.js docs for beforeInteractive scripts.
 const THEME_INIT_SCRIPT = `
   (function() {
-    var stored = localStorage.getItem('rex-theme');
-    var preferred = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-    if ((stored || preferred) === 'light') {
-      document.documentElement.classList.add('light');
-    }
+    try {
+      var stored = localStorage.getItem('rex-theme');
+      var preferred = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      if ((stored || preferred) === 'light') {
+        document.documentElement.classList.add('light');
+      }
+    } catch (e) {}
   })();
 `;
 
@@ -52,9 +55,9 @@ const JSON_LD = JSON.stringify({
     'https://github.com/RexOwenDev',
     'https://upwork.com/freelancers/~016d94e91b51fc9dec',
   ],
-});
+}, null, 2);
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
