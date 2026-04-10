@@ -4,43 +4,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
-html {
-  height: 100%;
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-}
-
 @theme inline {
-  --font-heading: var(--font-geist-sans);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -83,6 +47,7 @@ a {
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/* ─── shadcn component tokens ─── */
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -116,6 +81,18 @@ a {
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* ─── Blueprint Systems design tokens — dark mode (default) ─── */
+  --bp-bg: #070d1a;
+  --bp-surface: #0d1424;
+  --bp-accent: #00d4ff;
+  --bp-accent-sky: #0ea5e9;
+  --bp-text-primary: #e2e8f0;
+  --bp-text-secondary: #94a3b8;
+  --bp-text-muted: #64748b;
+  --bp-border: rgba(0, 212, 255, 0.12);
+  --bp-grid: rgba(0, 212, 255, 0.04);
+  --bp-corner: rgba(0, 212, 255, 0.35);
 }
 
 .dark {
@@ -152,6 +129,20 @@ a {
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* ─── Blueprint Systems light mode — toggled by .light on <html> ─── */
+:root.light {
+  --bp-bg: #f0f5ff;
+  --bp-surface: #ffffff;
+  --bp-accent: #0284c7;
+  --bp-accent-sky: #0369a1;
+  --bp-text-primary: #0f172a;
+  --bp-text-secondary: #334155;
+  --bp-text-muted: #64748b;
+  --bp-border: rgba(2, 132, 199, 0.15);
+  --bp-grid: rgba(2, 132, 199, 0.05);
+  --bp-corner: rgba(2, 132, 199, 0.25);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -162,4 +153,133 @@ a {
   html {
     @apply font-sans;
   }
+}
+
+body {
+  background-color: var(--bp-bg);
+  color: var(--bp-text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  height: 100%;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Blueprint grid — applied as className */
+.blueprint-grid {
+  background-image:
+    linear-gradient(var(--bp-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--bp-grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Scroll progress bar — pure CSS scroll-driven animation */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--bp-accent);
+  transform-origin: left;
+  z-index: 100;
+  animation: grow-progress linear;
+  animation-timeline: scroll();
+}
+@keyframes grow-progress {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* Section reveal — JS adds .revealed via IntersectionObserver */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 600ms ease, transform 600ms ease;
+}
+.reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Typing cursor blink on hero spec label */
+.typing-cursor::after {
+  content: '|';
+  color: var(--bp-accent);
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* Hero name shimmer — GPU-safe: only animates background-position */
+.shimmer-text {
+  background: linear-gradient(
+    90deg,
+    var(--bp-text-primary) 0%,
+    var(--bp-accent) 40%,
+    var(--bp-text-primary) 60%
+  );
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 6s linear infinite;
+}
+@keyframes shimmer {
+  to { background-position: 200% center; }
+}
+
+/* Card top accent line — scaleX, NOT width, to avoid layout reflow */
+.card-accent-line {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--bp-accent), transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 300ms ease;
+}
+.group:hover .card-accent-line {
+  transform: scaleX(1);
+}
+
+/* ─── Reduced motion — disable all animations ─── */
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .shimmer-text {
+    animation: none;
+    background: none;
+    -webkit-text-fill-color: var(--bp-text-primary);
+    color: var(--bp-text-primary);
+  }
+  .typing-cursor::after { animation: none; }
+  .scroll-progress      { animation: none; }
+  .card-accent-line     { transition: none; }
 }
