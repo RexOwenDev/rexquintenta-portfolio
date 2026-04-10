@@ -18,6 +18,7 @@ export default function Hero() {
 
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const rafHandles: number[] = [];
 
     // Count-up — Geist Mono ensures fixed digit width, preventing CLS
     if (!reduced && statsRef.current) {
@@ -26,27 +27,44 @@ export default function Hero() {
         const target = parseInt(el.dataset.target ?? '0', 10);
         const startTime = performance.now();
         const duration = 1200;
+        let handle: number;
         const tick = (now: number) => {
           const progress = Math.min((now - startTime) / duration, 1);
           el.textContent = Math.floor(easeOutCubic(progress) * target).toString();
-          if (progress < 1) requestAnimationFrame(tick);
-          else el.textContent = target.toString();
+          if (progress < 1) {
+            handle = requestAnimationFrame(tick);
+            rafHandles.push(handle);
+          } else {
+            el.textContent = target.toString();
+          }
         };
-        requestAnimationFrame(tick);
+        handle = requestAnimationFrame(tick);
+        rafHandles.push(handle);
       });
     }
 
     // Cursor glow — CSS custom property on hero element
-    if (reduced) return;
+    if (reduced) {
+      return () => {
+        rafHandles.forEach(h => cancelAnimationFrame(h));
+      };
+    }
     const hero = document.getElementById('hero');
-    if (!hero) return;
+    if (!hero) {
+      return () => {
+        rafHandles.forEach(h => cancelAnimationFrame(h));
+      };
+    }
     const onMouseMove = (e: MouseEvent) => {
       const rect = hero.getBoundingClientRect();
       hero.style.setProperty('--cursor-x', `${e.clientX - rect.left}px`);
       hero.style.setProperty('--cursor-y', `${e.clientY - rect.top}px`);
     };
     hero.addEventListener('mousemove', onMouseMove);
-    return () => hero.removeEventListener('mousemove', onMouseMove);
+    return () => {
+      rafHandles.forEach(h => cancelAnimationFrame(h));
+      hero.removeEventListener('mousemove', onMouseMove);
+    };
   }, []);
 
   const handleMagneticMove = (e: React.MouseEvent<HTMLButtonElement>) => {
