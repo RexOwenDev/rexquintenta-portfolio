@@ -12,7 +12,7 @@ export default function Home() {
     <>
       <AnimationInit />
       <Nav />
-      <main>
+      <main id="main-content">
         <Hero />
         <Work />
         <Skills />

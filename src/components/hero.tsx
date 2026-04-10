@@ -136,8 +136,14 @@ export default function Hero() {
         {/* Stats — Geist Mono keeps digit widths fixed, preventing CLS during count-up */}
         <div ref={statsRef} className="flex flex-wrap justify-center gap-x-8 gap-y-4 mb-10 font-mono text-sm">
           {STATS.map(({ target, label }) => (
-            <div key={label} style={{ minWidth: '120px' }} className="text-center">
-              <span className="font-bold text-lg" style={{ color: 'var(--bp-accent)' }}>
+            <div
+              key={label}
+              style={{ minWidth: '120px' }}
+              className="text-center"
+              aria-label={`${target}${label}`}
+            >
+              {/* aria-hidden: screen readers use the parent aria-label; counters animate mid-value */}
+              <span className="font-bold text-lg" aria-hidden="true" style={{ color: 'var(--bp-accent)' }}>
                 <span data-target={target}>{target}</span>{label}
               </span>
             </div>
@@ -149,7 +155,7 @@ export default function Hero() {
             onMouseMove={handleMagneticMove}
             onMouseLeave={handleMagneticLeave}
             onClick={() => scrollTo('work')}
-            className="font-mono text-sm px-6 py-3 rounded-md font-semibold transition-all duration-200 hover:opacity-90"
+            className="focus-ring font-mono text-sm px-6 py-3 rounded-md font-semibold transition-all duration-200 hover:opacity-90"
             style={{ background: 'var(--bp-accent)', color: '#070d1a' }}
           >
             VIEW_WORK()
@@ -162,7 +168,7 @@ export default function Hero() {
               e.currentTarget.style.color = 'var(--bp-text-secondary)';
             }}
             onClick={() => scrollTo('contact')}
-            className="font-mono text-sm px-6 py-3 rounded-md border transition-all duration-200"
+            className="focus-ring font-mono text-sm px-6 py-3 rounded-md border transition-all duration-200"
             style={{ borderColor: 'var(--bp-border)', color: 'var(--bp-text-secondary)' }}
             onMouseEnter={e => {
               e.currentTarget.style.borderColor = 'var(--bp-accent)';

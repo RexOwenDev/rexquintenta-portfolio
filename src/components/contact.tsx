@@ -23,23 +23,27 @@ export default function Contact() {
           </p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 reveal">
-          {CONTACT_LINKS.map(({ label, value, href }) => (
-            <a
-              key={label}
-              href={href}
-              target={href.startsWith('mailto') ? undefined : '_blank'}
-              rel={href.startsWith('mailto') ? undefined : 'noopener noreferrer'}
-              className="p-5 rounded-lg border text-left transition-all duration-200 hover:-translate-y-1"
-              style={{ background: 'var(--bp-surface)', borderColor: 'var(--bp-border)' }}
-              onMouseEnter={e => (e.currentTarget.style.borderColor = 'var(--bp-accent)')}
-              onMouseLeave={e => (e.currentTarget.style.borderColor = 'var(--bp-border)')}
-            >
-              <p className="font-mono text-xs tracking-[2px] uppercase mb-2" style={{ color: 'var(--bp-accent)' }}>
-                {label}
-              </p>
-              <p className="text-sm truncate" style={{ color: 'var(--bp-text-secondary)' }}>{value}</p>
-            </a>
-          ))}
+          {CONTACT_LINKS.map(({ label, value, href }) => {
+            const isExternal = !href.startsWith('mailto');
+            return (
+              <a
+                key={label}
+                href={href}
+                target={isExternal ? '_blank' : undefined}
+                rel={isExternal ? 'noopener noreferrer' : undefined}
+                aria-label={isExternal ? `${label}: ${value} (opens in new tab)` : `Email ${value}`}
+                className="focus-ring p-5 rounded-lg border text-left transition-all duration-200 hover:-translate-y-1"
+                style={{ background: 'var(--bp-surface)', borderColor: 'var(--bp-border)' }}
+                onMouseEnter={e => (e.currentTarget.style.borderColor = 'var(--bp-accent)')}
+                onMouseLeave={e => (e.currentTarget.style.borderColor = 'var(--bp-border)')}
+              >
+                <p className="font-mono text-xs tracking-[2px] uppercase mb-2" aria-hidden="true" style={{ color: 'var(--bp-accent)' }}>
+                  {label}
+                </p>
+                <p className="text-sm truncate" aria-hidden="true" style={{ color: 'var(--bp-text-secondary)' }}>{value}</p>
+              </a>
+            );
+          })}
         </div>
       </div>
     </section>

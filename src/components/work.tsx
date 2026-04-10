@@ -15,9 +15,15 @@ export default function Work() {
           <div className="h-px w-full" style={{ background: 'var(--bp-border)' }} />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 reveal">
-          {projects.map(project => (
-            <ProjectCard key={project.id} project={project} />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {projects.map((project, i) => (
+            <div
+              key={project.id}
+              className="reveal"
+              style={{ transitionDelay: `${i * 100}ms` }}
+            >
+              <ProjectCard project={project} />
+            </div>
           ))}
         </div>
       </div>

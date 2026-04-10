@@ -75,6 +75,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         />
       </head>
       <body className={`${GeistSans.variable} ${GeistMono.variable} antialiased`}>
+        <a href="#main-content" className="skip-link">Skip to main content</a>
         {children}
         <Analytics />
       </body>
