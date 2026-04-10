@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
 import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
@@ -26,6 +26,18 @@ export const metadata: Metadata = {
     images: ['/og-image.png'],
   },
   robots: { index: true, follow: true },
+};
+
+// Separate from metadata per Next.js 14+ API — viewport cannot be co-located with metadata.
+// themeColor controls the browser chrome (address bar, tab) on mobile devices.
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  colorScheme: 'dark light',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#f0f5ff' },
+    { media: '(prefers-color-scheme: dark)', color: '#070d1a' },
+  ],
 };
 
 // Static compile-time string — no user input, no interpolation.

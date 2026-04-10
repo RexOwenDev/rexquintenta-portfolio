@@ -28,7 +28,7 @@ export default function ProjectCard({ project }: { project: Project }) {
 
       <div className="p-6">
         <div className="flex items-center gap-2 mb-3">
-          <span className="font-mono text-xs" style={{ color }} aria-label={label}>
+          <span className="font-mono text-xs" style={{ color }} role="status" aria-label={`Status: ${label}`}>
             <span aria-hidden="true">{dot}</span> {label}
           </span>
         </div>
