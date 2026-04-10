@@ -7,6 +7,7 @@ import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://rexquintenta.dev'),
   title: 'Rex Quintenta — AI Automation Specialist',
   description:
     'I build AI pipelines, n8n workflows, and full-stack apps that ship. Claude Code + n8n + Next.js specialist based in the Philippines.',
