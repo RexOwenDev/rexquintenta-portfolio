@@ -130,7 +130,10 @@
 }
 
 /* ─── Blueprint Systems light mode — toggled by .light on <html> ─── */
+/* Note: .light and .dark are mutually exclusive — theme-init.ts ensures only one is ever set */
 :root.light {
+  /* Override shadcn background to match Blueprint surface */
+  --background: #f0f5ff;
   --bp-bg: #f0f5ff;
   --bp-surface: #ffffff;
   --bp-accent: #0284c7;
@@ -210,6 +213,7 @@ a {
   z-index: 100;
   animation: grow-progress linear;
   animation-timeline: scroll();
+  animation-fill-mode: both;
 }
 @keyframes grow-progress {
   from { transform: scaleX(0); }
@@ -253,7 +257,8 @@ a {
   animation: shimmer 6s linear infinite;
 }
 @keyframes shimmer {
-  to { background-position: 200% center; }
+  from { background-position: 0% center; }
+  to   { background-position: 200% center; }
 }
 
 /* Card top accent line — scaleX, NOT width, to avoid layout reflow */
